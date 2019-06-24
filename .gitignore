@@ -1,0 +1,7 @@
+# Created by .ignore support plugin (hsz.mobi)
+**/target/
+/wiki/
+/.idea/*
+!/.idea/runConfigurations/
+/src/main/resources/*
+!/src/main/resources/log4j.properties
