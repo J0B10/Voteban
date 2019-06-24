@@ -8,6 +8,8 @@ scalaVersion := "2.13.0"
 
 assemblyJarName in assembly := s"${name.value}-${version.value}.jar"
 
+libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.2.0"
+
 // JDA
 resolvers += "jcenter-bintray" at "http://jcenter.bintray.com"
 libraryDependencies += "net.dv8tion" % "JDA" % "3.8.3_463"
