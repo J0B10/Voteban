@@ -7,6 +7,7 @@ import de.voteban.utils.RestartScheduler
 
 import scala.concurrent.duration._
 import scala.io.StdIn
+import scala.language.postfixOps
 
 object Launcher {
 

@@ -5,10 +5,9 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.Executors
 
-import de.voteban.utils.WithLogger
-
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.duration._
+import scala.language.postfixOps
 
 /**
   * Schedules a shutdown of the bot after a given time interval
