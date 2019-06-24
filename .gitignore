@@ -2,6 +2,12 @@
 **/target/
 /wiki/
 /.idea/*
-!/.idea/runConfigurations/
 /src/main/resources/*
 !/src/main/resources/log4j.properties
+# Only allow specific runConfigurations as they may contain tokens
+!/.idea/runConfigurations/Run.xml
+!/.idea/runConfigurations/Generate_scaladoc.xml
+!/.idea/runConfigurations/Build_Project.xml
+# Ignore shell scripts as they may contain tokens
+*.sh
+*.bat
