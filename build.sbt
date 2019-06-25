@@ -9,6 +9,7 @@ scalaVersion := "2.13.0"
 assemblyJarName in assembly := s"${name.value}-${version.value}.jar"
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.2.0"
+libraryDependencies += "org.json4s" %% "json4s-native" % "3.6.6"
 
 // JDA
 resolvers += "jcenter-bintray" at "http://jcenter.bintray.com"
