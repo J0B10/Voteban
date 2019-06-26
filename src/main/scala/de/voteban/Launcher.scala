@@ -27,6 +27,7 @@ object Launcher {
           null
       }
     }).map(t => RestartScheduler(t.atOffset(OffsetDateTime.now().getOffset), 15 seconds, 4))
+    new VotebanBot(token, restart).init()
   }
 
 }
