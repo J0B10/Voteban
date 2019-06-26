@@ -27,7 +27,7 @@ class JSONDatabaseService extends WithLogger {
   def loadDatabase(): Unit = {
     if (!DATABASE_FILE.exists()) {
       val w = new PrintWriter(new OutputStreamWriter(new FileOutputStream(DATABASE_FILE), StandardCharsets.UTF_8))
-      w.print(Database(Map()))
+      w.print(Serialization.write(Database(Map())))
       w.close()
     }
     _database = Some(Serialization.read[Database](Source.fromFile(DATABASE_FILE, "UTF8").mkString))
@@ -76,7 +76,7 @@ class JSONDatabaseService extends WithLogger {
 
   private def saveDatabase(): Unit = {
     val w = new PrintWriter(new OutputStreamWriter(new FileOutputStream(DATABASE_FILE), StandardCharsets.UTF_8))
-    w.print(database)
+    w.print(Serialization.write(database))
     w.close()
     log debug "Database saved"
   }

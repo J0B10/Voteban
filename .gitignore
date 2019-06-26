@@ -1,5 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 **/target/
+/db.json
+/config/
 /wiki/
 /.idea/*
 /src/main/resources/*
