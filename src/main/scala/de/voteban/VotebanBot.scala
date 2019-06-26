@@ -1,5 +1,7 @@
 package de.voteban
 
+import de.voteban.config.XMLConfigurationService
+import de.voteban.db.JSONDatabaseService
 import de.voteban.utils.{RestartScheduler, WithLogger}
 import javax.security.auth.login.LoginException
 import net.dv8tion.jda.core.{JDA, JDABuilder}
@@ -7,6 +9,9 @@ import net.dv8tion.jda.core.{JDA, JDABuilder}
 class VotebanBot(private val apiToken: String, private val restartScheduler: Option[RestartScheduler] = None) extends WithLogger {
 
   private var _jda: Option[JDA] = None
+  private var configService = new XMLConfigurationService
+  private var databaseService= new JSONDatabaseService
+
 
   def JDA: JDA = _jda.getOrElse(throw new IllegalStateException("Bot is not initialized yet"))
 

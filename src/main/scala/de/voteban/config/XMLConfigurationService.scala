@@ -24,10 +24,17 @@ class XMLConfigurationService extends WithLogger {
   def loadCache(): Unit = {
     Option(CONFIG_DIR.listFiles()).foreach(_.foreach(f =>
       f.getName match {
-        case GUILD_CONFIG_FILE_REGEX(guildId) => loadGuildConfig(guildId.toLong)
+        case GUILD_CONFIG_FILE_REGEX(guildId) =>
+          try {
+            loadGuildConfig(guildId.toLong)
+          } catch {
+            case e: Exception =>
+              log warn s"Could not load ${f.getName} - ${e.getMessage}"
+          }
         case _=> //Ignore default
       }
       ))
+    log debug "Config files were loaded into cache"
   }
 
   /**
@@ -39,6 +46,7 @@ class XMLConfigurationService extends WithLogger {
     * @return config of that guild
     * @throws Exception if config loading failed
     */
+  @throws(classOf[Exception])
   def loadGuildConfig(guildId: Long): GuildConfig = {
     cachedConfigs.getOrElse(guildId, {
       val file = guildConfigFile(guildId)
@@ -50,6 +58,7 @@ class XMLConfigurationService extends WithLogger {
         }
       }
       cachedConfigs += (guildId -> cfg)
+      log debug  s"Cached config for guild $guildId"
       cfg
     })
   }
@@ -63,6 +72,7 @@ class XMLConfigurationService extends WithLogger {
     * @return the parsed config object
     * @throws Exception if config loading failed
     */
+  @throws(classOf[Exception])
   def readGuildConfig(inputStream: InputStream): GuildConfig = {
     val config = xml.Utility.trim(xml.XML.load(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) \ "config"
     GuildConfig(
@@ -76,21 +86,28 @@ class XMLConfigurationService extends WithLogger {
     * Tries to save the configuration for a guild to a xml file
     *
     * @param guildConfig the configuration object to save
-    * @throws Exception if config saving failed
     */
   def saveGuildConfig(guildConfig: GuildConfig): Unit = {
     val file = guildConfigFile(guildConfig.guildId)
-    this synchronized {
-      writeGuildConfig(guildConfig, new FileOutputStream(file, false))
+    try {
+      this synchronized {
+        writeGuildConfig(guildConfig, new FileOutputStream(file, false))
+      }
+      cachedConfigs += (guildConfig.guildId -> guildConfig)
+      log debug s"Saved config ${file.getName}"
+    } catch {
+      case e: Exception => log warn s"Failed to save ${file.getName} - ${e.getMessage}"
     }
   }
 
   /**
     * Tries to write the configuration for a guild to an output stream
     *
-    * @param guildConfig
-    * @param outputStream
+    * @param guildConfig the configuration object to save
+    * @param outputStream the output strem to which the configuration should be written
+    * @throws Exception if config saving failed
     */
+  @throws(classOf[Exception])
   def writeGuildConfig(guildConfig: GuildConfig, outputStream: OutputStream): Unit = {
     val writer = new PrintWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8))
     val config: Node =
