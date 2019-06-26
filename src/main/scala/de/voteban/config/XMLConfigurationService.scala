@@ -7,8 +7,9 @@ import de.voteban.config.XMLConfigurationService.{CONFIG_DIR, DEFAULT_CONFIG, GU
 import de.voteban.utils.WithLogger
 
 import scala.collection.concurrent.TrieMap
+import scala.io.Source
 import scala.util.matching.Regex
-import scala.xml.{Node, PrettyPrinter}
+import scala.xml.{Node, NodeSeq, PrettyPrinter}
 
 /**
   * Service for loading and saving configuration files.
@@ -76,7 +77,8 @@ class XMLConfigurationService extends WithLogger {
   def readGuildConfig(inputStream: InputStream): GuildConfig = {
     val config = xml.Utility.trim(xml.XML.load(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) \ "config"
     GuildConfig(
-      (config \ "guildId").text.toLong
+      (config \ "guildId").text.toLong,
+      (config \ "comments" \ "s").map(_.text)
       //Read other config values from config
     )
   }
@@ -115,6 +117,9 @@ class XMLConfigurationService extends WithLogger {
         <guildId>
           {guildConfig.guildId}
         </guildId>
+        <comments>
+          {NodeSeq.fromSeq(guildConfig.comments.map(s => <s>{s}</s>))}
+        </comments>
       </config>
     //Save config values to config
     writer.print(new PrettyPrinter(120, 2).format(config))
@@ -125,13 +130,17 @@ class XMLConfigurationService extends WithLogger {
 
 object XMLConfigurationService {
 
+  //TODO Specify file location
+ private val DEFAULT_COMMENTS = Source.fromInputStream(getClass.getResourceAsStream(" "), "UTF8").getLines.toSeq
+
   // language=RegExp
   val GUILD_CONFIG_FILE_REGEX: Regex = "guild-(\\d+).xml".r
 
   val CONFIG_DIR = new File("config")
 
   def DEFAULT_CONFIG(guildId: Long): GuildConfig = GuildConfig(
-    guildId
+    guildId,
+    DEFAULT_COMMENTS
     //Add default values
   )
 
