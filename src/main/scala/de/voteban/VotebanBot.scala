@@ -2,7 +2,7 @@ package de.voteban
 
 import de.voteban.config.XMLConfigurationService
 import de.voteban.db.JSONDatabaseService
-import de.voteban.utils.{RestartScheduler, WithLogger}
+import de.voteban.utils.{ConfigManager, RestartScheduler, WithLogger}
 import javax.security.auth.login.LoginException
 import net.dv8tion.jda.core.{JDA, JDABuilder}
 
@@ -36,6 +36,8 @@ class VotebanBot(private val apiToken: String, private val restartScheduler: Opt
   def onStart(): Unit = {
     configService.loadCache()
     databaseService.loadDatabase()
+    JDA addEventListener new ConfigManager(this)
+
   }
 
 
