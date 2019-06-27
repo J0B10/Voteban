@@ -49,7 +49,7 @@ class RestartScheduler(scheduleIn: FiniteDuration, val notifyInterval: FiniteDur
   }
 
   private val shutdown: Runnable =() => {
-    log info "SHUTING DOWN NOW!"
+    log info "SHUTTING DOWN NOW!"
     sys exit 0
   }
 
