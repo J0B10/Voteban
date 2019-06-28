@@ -5,7 +5,8 @@ package de.voteban.config
   */
 case class GuildConfig(
                         guildId: Long,
-                        comments: Seq[String]
-                      //Add more values here (but don't forget to also implement them in ConfigurationService)
+                        banReasons: Seq[String],
+                        banReasonImages: Seq[String]
+                        //Add more values here (but don't forget to also implement them in ConfigurationService)
                       ) {
 }
