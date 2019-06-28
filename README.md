@@ -16,6 +16,8 @@ Also be aware if using the bot that it sadly has the potential to be misused or 
 
 There are so meany reasons why you would need `/voteban`:
 
+<img align="right" src="https://raw.githubusercontent.com/joblo2213/Voteban/master/memes/everyone_gets_a_ban_operah.jpg">
+
 Trojaner posts screenshots with light theme - **`/voteban trojaner`!**
 
 MelanX is telling incredibly bad jokes - **`/voteban melan`!**
@@ -33,8 +35,6 @@ derNiklaas is to blame - **`/voteban derNiklaas`!**
 Sireisenblut is existing - **`/voteban Sireisenblut`!**
 
 **Everybody loves to ban! Start banning your friends now!**
-
-<img align="right" src="https://raw.githubusercontent.com/joblo2213/Voteban/master/memes/everyone_gets_a_ban_operah.jpg">
 
 ## Usage
 ```
