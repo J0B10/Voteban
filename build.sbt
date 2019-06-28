@@ -1,6 +1,6 @@
 import java.io.File
 
-name := "Voteban't"
+name := "Voteban"
 
 version := "0.1"
 

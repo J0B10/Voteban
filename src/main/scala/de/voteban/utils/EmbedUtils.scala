@@ -21,7 +21,7 @@ object EmbedUtils {
   /**
     * Shortened URL that links to the bots github page
     */
-  val BOT_QUICK_URL: String = "git.io/voteban-t"
+  val BOT_QUICK_URL: String = "git.io/Voteban"
 
   /**
     * A list of unicode emotes
@@ -37,11 +37,11 @@ object EmbedUtils {
     builder.setDescription(s"**${banned.getEffectiveName}** has been banned ${toEmotes(bannsReceived)} times\n" +
       s"**${author.getEffectiveName}** has banned others ${toEmotes(bannsInitiated)} times")
     builder.setColor(COLOR)
-    builder.addField("Ban reason:", if (isReasonAnImage) ZERO_WIDTH_SPACE else reason, false)
+    builder.addField("Ban message:", if (isReasonAnImage) ZERO_WIDTH_SPACE else reason, false)
     if (isReasonAnImage) {
       builder.setImage(reason)
     }
-    builder.setFooter("git.io/voteban-t", VotebanBot.JDA.getSelfUser.getEffectiveAvatarUrl)
+    builder.setFooter("git.io/Voteban", VotebanBot.JDA.getSelfUser.getEffectiveAvatarUrl)
     builder.setTimestamp(OffsetDateTime.now)
     builder.build()
   }
@@ -86,7 +86,7 @@ object EmbedUtils {
     if (builder.getFields.isEmpty) {
       builder.setDescription("No users banned yet.\nBe the first who banned someone, use `/votban`!")
     } else {
-      builder.setImage("https://raw.githubusercontent.com/joblo2213/Voteban-t/master/memes/congrats_banned_kim.jpg")
+      builder.setImage("https://raw.githubusercontent.com/joblo2213/Voteban/master/memes/congrats_banned_kim.jpg")
     }
     builder.setColor(COLOR)
     builder.setFooter(BOT_QUICK_URL, VotebanBot.JDA.getSelfUser.getEffectiveAvatarUrl)
@@ -122,7 +122,7 @@ object EmbedUtils {
     if (builder.getFields.isEmpty) {
       builder.setDescription("No users banned yet.\nBe the first who banned someone, use `/votban`!")
     } else {
-      builder.setImage("https://raw.githubusercontent.com/joblo2213/Voteban-t/master/memes/everyone_gets_a_ban_operah.jpg")
+      builder.setImage("https://raw.githubusercontent.com/joblo2213/Voteban/master/memes/everyone_gets_a_ban_operah.jpg")
     }
     builder.setColor(COLOR)
     builder.setFooter(BOT_QUICK_URL, VotebanBot.JDA.getSelfUser.getEffectiveAvatarUrl)

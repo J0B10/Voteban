@@ -107,7 +107,7 @@ class ConfigManager extends EventListener {
       })
     } else {
       author.openPrivateChannel().complete()
-        .sendMessage(s"⚠ **No guilds found where your are admin.**\nFor setting up the bot look at https://github.com/joblo2213/Voteban-t").queue()
+        .sendMessage(s"⚠ **No guilds found where your are admin.**\nFor setting up the bot look at https://github.com/joblo2213/Voteban").queue()
     }
   }
 }

@@ -1,5 +1,5 @@
 <p>
-<img align="right" src="https://raw.githubusercontent.com/joblo2213/Voteban-t/master/voteban.png">
+<img align="right" src="https://raw.githubusercontent.com/joblo2213/Voteban/master/voteban.png">
 <img align="right" width="128" src="https://cdn.discordapp.com/attachments/449265416183742465/594175597039714337/hack_wump.png">
 </p>
 

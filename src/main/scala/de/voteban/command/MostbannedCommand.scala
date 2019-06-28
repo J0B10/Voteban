@@ -5,7 +5,7 @@ import de.voteban.db.UserData
 import de.voteban.utils.EmbedUtils
 import net.dv8tion.jda.core.entities.Message
 
-object MostbannedCommand extends Command("mostbanned") {
+object MostbannedCommand extends Command("mostbanned", Seq("banned", "topbanned")) {
   /**
     * Override to implement what is done on command
     *
