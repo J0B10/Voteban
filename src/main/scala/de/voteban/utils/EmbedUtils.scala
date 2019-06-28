@@ -34,8 +34,8 @@ object EmbedUtils {
     val builder = new EmbedBuilder()
     val msg = s"${banned.getEffectiveName} was banned by  ${author.getEffectiveName}"
     builder.setAuthor(msg, null, banned.getUser.getAvatarUrl)
-    builder.setDescription(s"**${banned.getEffectiveName}** has been banned ${toEmotes(bannsReceived)} times**\n" +
-      s"${author.getEffectiveName} has banned others ${toEmotes(bannsInitiated)} times")
+    builder.setDescription(s"**${banned.getEffectiveName}** has been banned ${toEmotes(bannsReceived)} times\n" +
+      s"**${author.getEffectiveName}** has banned others ${toEmotes(bannsInitiated)} times")
     builder.setColor(COLOR)
     builder.addField("Ban reason:", if (isReasonAnImage) ZERO_WIDTH_SPACE else reason, false)
     if (isReasonAnImage) {
@@ -86,7 +86,7 @@ object EmbedUtils {
     if (builder.getFields.isEmpty) {
       builder.setDescription("No users banned yet.\nBe the first who banned someone, use `/votban`!")
     } else {
-      builder.setImage("https://raw.githubusercontent.com/joblo2213/Voteban-t/memes/congrats_banned_kim.jpg")
+      builder.setImage("https://github.com/joblo2213/Voteban-t/blob/master/memes/congrats_banned_kim.jpg")
     }
     builder.setColor(COLOR)
     builder.setFooter(BOT_QUICK_URL, VotebanBot.JDA.getSelfUser.getEffectiveAvatarUrl)
@@ -114,7 +114,7 @@ object EmbedUtils {
     if (builder.getFields.isEmpty) {
       builder.setDescription("No users banned yet.\nBe the first who banned someone, use `/votban`!")
     } else {
-      builder.setImage("https://raw.githubusercontent.com/joblo2213/Voteban-t/memes/everyone_gets_a_ban_operah.jpg")
+      builder.setImage("https://github.com/joblo2213/Voteban-t/blob/master/memes/everyone_gets_a_ban_operah.jpg")
     }
     builder.setColor(COLOR)
     builder.setFooter(BOT_QUICK_URL, VotebanBot.JDA.getSelfUser.getEffectiveAvatarUrl)

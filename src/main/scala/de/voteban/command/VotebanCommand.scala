@@ -3,7 +3,7 @@ package de.voteban.command
 import de.voteban.VotebanBot
 import de.voteban.db.UserData
 import de.voteban.utils.EmbedUtils
-import net.dv8tion.jda.core.entities.{Member, Message, TextChannel, User}
+import net.dv8tion.jda.core.entities.{Member, Message, TextChannel}
 
 import scala.jdk.CollectionConverters._
 import scala.util.Random
@@ -66,15 +66,15 @@ object VotebanCommand extends Command("voteban", Seq("votekick", "ban")) {
     VotebanBot.databaseService.updateUserData(authorData, author.getGuild.getIdLong)
     Option(reason) match {
       case Some(r) =>
-        channel.sendMessage(EmbedUtils.votebanEmbed(banned, bannedData.bansReceived, author, bannedData.bansInitiated, reason, isReasonAnImage = false)).queue()
+        channel.sendMessage(EmbedUtils.votebanEmbed(banned, bannedData.bansReceived, author, authorData.bansInitiated, reason, isReasonAnImage = false)).queue()
       case _ =>
         val reasons = VotebanBot.GUILD_CONFIG(channel.getGuild).banReasons
         val reasonImages = VotebanBot.GUILD_CONFIG(channel.getGuild).banReasonImages
         val random = Random.nextInt(reasons.length + reasonImages.length)
         if (random < reasons.length) {
-          channel.sendMessage(EmbedUtils.votebanEmbed(banned, bannedData.bansReceived, author, bannedData.bansInitiated, reasons(random), isReasonAnImage = false)).queue()
+          channel.sendMessage(EmbedUtils.votebanEmbed(banned, bannedData.bansReceived, author, authorData.bansInitiated, reasons(random), isReasonAnImage = false)).queue()
         } else {
-          channel.sendMessage(EmbedUtils.votebanEmbed(banned, bannedData.bansReceived, author, bannedData.bansInitiated, reasonImages(random - reasons.length), isReasonAnImage = true)).queue()
+          channel.sendMessage(EmbedUtils.votebanEmbed(banned, bannedData.bansReceived, author, authorData.bansInitiated, reasonImages(random - reasons.length), isReasonAnImage = true)).queue()
         }
     }
   }

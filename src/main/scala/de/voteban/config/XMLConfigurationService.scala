@@ -23,7 +23,8 @@ class XMLConfigurationService extends WithLogger {
     * Load all configurazion files into cache
     */
   def loadCache(): Unit = {
-    Option(CONFIG_DIR.listFiles()).foreach(_.foreach(f =>
+    if (!XMLConfigurationService.CONFIG_DIR.exists()) CONFIG_DIR.mkdirs()
+    CONFIG_DIR.listFiles().foreach(f =>
       f.getName match {
         case GUILD_CONFIG_FILE_REGEX(guildId) =>
           try {
@@ -34,7 +35,7 @@ class XMLConfigurationService extends WithLogger {
           }
         case _ => //Ignore default
       }
-    ))
+    )
     log debug "Config files were loaded into cache"
   }
 
@@ -138,9 +139,14 @@ object XMLConfigurationService {
   // language=RegExp
   val GUILD_CONFIG_FILE_REGEX: Regex = "guild-(\\d+).xml".r
   val CONFIG_DIR = new File("config")
-  //TODO Specify file location
-  private val BAN_REASONS_DEFAULT = Source.fromInputStream(getClass.getResourceAsStream(" "), "UTF8").getLines.toSeq
-  private val BAN_REASON_IMAGES_DEFAULT = Source.fromInputStream(getClass.getResourceAsStream(" "), "UTF8").getLines.toSeq
+
+  private val BAN_REASONS_DEFAULT =
+    Source.fromInputStream(getClass.getResourceAsStream("/ban_reasons.txt"), "UTF8")
+    .getLines.filter(line => !line.startsWith("#") || !line.isEmpty).toSeq
+
+  private val BAN_REASON_IMAGES_DEFAULT =
+    Source.fromInputStream(getClass.getResourceAsStream("/ban_reasons.images.txt"), "UTF8")
+    .getLines.filter(line => !line.startsWith("#") || !line.isEmpty).toSeq
 
   def DEFAULT_CONFIG(guildId: Long): GuildConfig = GuildConfig(
     guildId,

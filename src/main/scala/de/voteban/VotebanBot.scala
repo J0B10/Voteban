@@ -21,20 +21,20 @@ object VotebanBot extends WithLogger {
   private var restartScheduler: Option[RestartScheduler] = None
 
   /**
-    * Shortcut for getting the database content for a specific guild
-    *
-    * @param guild guild object form jda
-    * @return the database entry for that guild
-    */
-  def GUILD_DATA(guild: Guild): GuildData = databaseService.database.guilds.getOrElse(guild.getIdLong, GuildData(guild.getIdLong, Map()))
-
-  /**
     * Shortcut for getting the database content for a specific guild member
     *
     * @param member member object form jda
     * @return the database entry for that user
     */
   def USER_DATA(member: Member): UserData = GUILD_DATA(member.getGuild).users.getOrElse(member.getUser.getIdLong, UserData(member.getUser.getIdLong, 0, 0))
+
+  /**
+    * Shortcut for getting the database content for a specific guild
+    *
+    * @param guild guild object form jda
+    * @return the database entry for that guild
+    */
+  def GUILD_DATA(guild: Guild): GuildData = databaseService.database.guilds.getOrElse(guild.getIdLong, GuildData(guild.getIdLong, Map()))
 
   /**
     * Shortcut for getting the configuration settings for a specific guild
@@ -50,7 +50,7 @@ object VotebanBot extends WithLogger {
       XMLConfigurationService.DEFAULT_CONFIG(guild.getIdLong)
   }
 
-  private[Launcher] def init(apiToken: String, restartScheduler: Option[RestartScheduler] = None): Boolean = {
+  def init(apiToken: String, restartScheduler: Option[RestartScheduler] = None): Boolean = {
     try {
       this.restartScheduler = restartScheduler
       log info "Waiting while bot is logging in..."
@@ -73,7 +73,10 @@ object VotebanBot extends WithLogger {
     configService.loadCache()
     databaseService.loadDatabase()
     JDA addEventListener new ConfigManager
-    JDA.addEventListener(VotebanCommand)
+    JDA addEventListener MostbannedCommand
+    JDA addEventListener MybansCommand
+    JDA addEventListener VotebanCommand
+    JDA addEventListener WhobannedCommand
     JDA.getPresence.setGame(Game.playing(EmbedUtils.BOT_QUICK_URL))
   }
 
