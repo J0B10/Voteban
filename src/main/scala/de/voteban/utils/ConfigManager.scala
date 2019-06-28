@@ -2,7 +2,6 @@ package de.voteban.utils
 
 import java.io.ByteArrayOutputStream
 
-import de.voteban.VotebanBot
 import de.voteban.config.XMLConfigurationService
 import net.dv8tion.jda.core.{MessageBuilder, Permission}
 import net.dv8tion.jda.core.entities.{Message, User}

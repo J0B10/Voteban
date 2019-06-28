@@ -7,17 +7,19 @@ import de.voteban.utils.{ConfigManager, RestartScheduler, WithLogger}
 import javax.security.auth.login.LoginException
 import net.dv8tion.jda.core.{JDA, JDABuilder}
 
-class VotebanBot(private val apiToken: String, private val restartScheduler: Option[RestartScheduler] = None) extends WithLogger {
+object VotebanBot extends WithLogger {
 
   private var _jda: Option[JDA] = None
+  private var restartScheduler: Option[RestartScheduler] = None
   val configService = new XMLConfigurationService
   val databaseService = new JSONDatabaseService
 
 
   def JDA: JDA = _jda.getOrElse(throw new IllegalStateException("Bot is not initialized yet"))
 
-  def init(): Boolean = {
+  private[Launcher] def init(apiToken: String, restartScheduler: Option[RestartScheduler] = None): Boolean = {
     try {
+      this.restartScheduler = restartScheduler
       log info "Waiting while bot is logging in..."
       _jda = Some(new JDABuilder(apiToken).build.awaitReady)
       sys addShutdownHook onShutdown
@@ -34,7 +36,7 @@ class VotebanBot(private val apiToken: String, private val restartScheduler: Opt
     }
   }
 
-  def onStart(): Unit = {
+  private def onStart(): Unit = {
     configService.loadCache()
     databaseService.loadDatabase()
     JDA addEventListener new ConfigManager(this)
@@ -42,7 +44,8 @@ class VotebanBot(private val apiToken: String, private val restartScheduler: Opt
   }
 
 
-  def onShutdown(): Unit = {
+  private def onShutdown(): Unit = {
+    restartScheduler.foreach(_.cancel())
     JDA.shutdown()
   }
 }
