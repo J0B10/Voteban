@@ -2,6 +2,7 @@ package de.voteban.utils
 
 import java.io.ByteArrayOutputStream
 
+import de.voteban.VotebanBot
 import de.voteban.config.XMLConfigurationService
 import net.dv8tion.jda.core.{MessageBuilder, Permission}
 import net.dv8tion.jda.core.entities.{Message, User}
@@ -13,9 +14,8 @@ import scala.jdk.CollectionConverters._
 
 /**
   * Handles up & downloading of the config files through private messages
-  * @param bot instance of the bot providing access to jda and the config service
   */
-class ConfigManager(private val bot: VotebanBot) extends EventListener {
+class ConfigManager extends EventListener {
 
   /**
     * Called by JDA on any event
@@ -55,12 +55,12 @@ class ConfigManager(private val bot: VotebanBot) extends EventListener {
     */
   private def saveConfig(xmlFile: Message.Attachment, author: User): Unit = {
     try {
-      val config = bot.configService.readGuildConfig(xmlFile.getInputStream)
-       bot.JDA.getGuilds.asScala.find(g => g.getIdLong == config.guildId) match {
+      val config = VotebanBot.configService.readGuildConfig(xmlFile.getInputStream)
+      VotebanBot.JDA.getGuilds.asScala.find(g => g.getIdLong == config.guildId) match {
          case Some(guild) =>
            Option(guild.getMember(author)) match {
              case Some(member) if member.hasPermission(Permission.ADMINISTRATOR) =>
-               bot.configService.saveGuildConfig(config)
+               VotebanBot.configService.saveGuildConfig(config)
                author.openPrivateChannel().complete().sendMessage(s"✅ Updated config for **${guild.getName}** _(${guild.getId})_").queue()
              case _ =>
                author.openPrivateChannel().complete()
@@ -85,7 +85,7 @@ class ConfigManager(private val bot: VotebanBot) extends EventListener {
     * @param author user that did send the message
     */
   private def sendConfig(author: User): Unit = {
-    val guilds = bot.JDA.getGuilds.asScala.filter(g => Option(g.getMember(author)) match {
+    val guilds = VotebanBot.JDA.getGuilds.asScala.filter(g => Option(g.getMember(author)) match {
       case Some(member) if member.hasPermission(Permission.ADMINISTRATOR) => true
       case _ => false
     })
@@ -93,7 +93,7 @@ class ConfigManager(private val bot: VotebanBot) extends EventListener {
       guilds.foreach(g => {
         try {
           val output = new ByteArrayOutputStream()
-          bot.configService.writeGuildConfig(bot.configService.loadGuildConfig(g.getIdLong), output)
+          VotebanBot.configService.writeGuildConfig(VotebanBot.GUILD_CONFIG(g), output)
           author.openPrivateChannel().complete().sendFile(
             output.toByteArray,
             XMLConfigurationService.guildConfigFile(g.getIdLong).getName,

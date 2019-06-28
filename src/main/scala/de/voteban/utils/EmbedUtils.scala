@@ -2,11 +2,11 @@ package de.voteban.utils
 
 import java.awt.Color
 
+import de.voteban.VotebanBot
 import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.EmbedBuilder.ZERO_WIDTH_SPACE
+import net.dv8tion.jda.core.entities.MessageEmbed.Field
 import net.dv8tion.jda.core.entities.{Member, MessageEmbed, SelfUser, User}
-
-import scala.collection.mutable
 
 /**
   * Provides methods for creating preset embeds based on given data
@@ -16,7 +16,7 @@ object EmbedUtils {
   /**
     * Color that is used for all embeds
     */
-  val COLOR: Color = Color.CYAN //TODO Find a bot color
+  val COLOR: Color = Color.decode("#32603B")
 
   /**
     * A list of unicode emotes
@@ -61,22 +61,25 @@ object EmbedUtils {
 
   /**
     * Embed that shows of the most often banned users
-    * @param bot user of the bot
     * @param leaderList list with the most often banned users and their stats
     * @return
     */
-  def mostBannedEmbed(bot: SelfUser, leaderList: List[(Member, Int)]): MessageEmbed = {
+  def mostBannedEmbed(leaderList: List[(Member, Int)]): MessageEmbed = {
     val builder = new EmbedBuilder()
-    builder.setAuthor("Wall of shame", null, bot.getEffectiveAvatarUrl)
-    val description = new mutable.StringBuilder
+    builder.setAuthor("Wall of shame", null, VotebanBot.JDA.getSelfUser.getEffectiveAvatarUrl)
     for (((user, value), i) <- leaderList.zipWithIndex) {
-      description ++= s"${toEmotes(i)} **${user.getEffectiveName}** _(${user.getUser.getAsTag})_ banned **$value** times\n$ZERO_WIDTH_SPACE\n"
+      builder.addField(
+        s"${toEmotes(i + 1)} **${user.getEffectiveName}** _(${user.getUser.getAsTag})_ banned **$value** times",
+        ZERO_WIDTH_SPACE,
+        false
+      )
     }
-    builder.setDescription(description)
+    if (builder.getFields.isEmpty) {
+      builder.setDescription("No users banned yet.\nBe the first who banned someone, use `/votban`!")
+    } else {
+      builder.setImage("https://raw.githubusercontent.com/joblo2213/Voteban-t/memes/congrats_banned_kim.jpg")
+    }
     builder.setColor(COLOR)
-
-//    TODO Find image for this embed
-//    builder.setImage("")
     builder.build()
   }
 }
