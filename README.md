@@ -28,7 +28,7 @@ skate702 is piling up open TODOs - **`/voteban skate702`!**
 
 felixletsplay is using eclipse - **`/voteban felixletsplay`!**
 
-ungefroren isn't merging my PR - **`/voteban unng3froren`!**
+ungefroren isn't merging my PR - **`/voteban ungefroren`!**
 
 derNiklaas is to blame - **`/voteban derNiklaas`!**
 
@@ -69,7 +69,7 @@ You can just [invite the bot](https://discordapp.com/api/oauth2/authorize?client
 [Here](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) is a guide how to get an api token for the bot.  
 
 No matter if you are self hosting the bot or just invited him using the link you can upload your own config file to customize the bot:  
-Just send him a `config?` as a private message and he will answer with your servers current configuration.  
+Just send him `config?` as a private message and he will answer with your servers current configuration.  
 Just edit the file and send it back to the bot.  
 The file is pretty much self explaining, you can add/remove ban messages and images or customize how man users are shown in the leaderboards.  
 Maybe there will be more customization in the future. 
