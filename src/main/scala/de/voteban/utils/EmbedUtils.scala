@@ -6,7 +6,7 @@ import java.time.OffsetDateTime
 import de.voteban.VotebanBot
 import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.EmbedBuilder.ZERO_WIDTH_SPACE
-import net.dv8tion.jda.core.entities.{Member, MessageEmbed, Role, User}
+import net.dv8tion.jda.core.entities.{Member, MessageEmbed}
 
 /**
   * Provides methods for creating preset embeds based on given data
@@ -86,13 +86,21 @@ object EmbedUtils {
     if (builder.getFields.isEmpty) {
       builder.setDescription("No users banned yet.\nBe the first who banned someone, use `/votban`!")
     } else {
-      builder.setImage("https://github.com/joblo2213/Voteban-t/blob/master/memes/congrats_banned_kim.jpg")
+      builder.setImage("https://raw.githubusercontent.com/joblo2213/Voteban-t/master/memes/congrats_banned_kim.jpg")
     }
     builder.setColor(COLOR)
     builder.setFooter(BOT_QUICK_URL, VotebanBot.JDA.getSelfUser.getEffectiveAvatarUrl)
     builder.setTimestamp(OffsetDateTime.now)
     builder.build()
   }
+
+  /**
+    * Formats the given number as unicode emote
+    *
+    * @param i a number
+    * @return unicode emote string
+    */
+  def toEmotes(i: Int): String = i.toString.map[Int](c => c.asDigit).map(DIGIT_EMOTE(_)).mkString
 
   /**
     * Embed that shows of the users that most often used the /voteban command
@@ -114,7 +122,7 @@ object EmbedUtils {
     if (builder.getFields.isEmpty) {
       builder.setDescription("No users banned yet.\nBe the first who banned someone, use `/votban`!")
     } else {
-      builder.setImage("https://github.com/joblo2213/Voteban-t/blob/master/memes/everyone_gets_a_ban_operah.jpg")
+      builder.setImage("https://raw.githubusercontent.com/joblo2213/Voteban-t/master/memes/everyone_gets_a_ban_operah.jpg")
     }
     builder.setColor(COLOR)
     builder.setFooter(BOT_QUICK_URL, VotebanBot.JDA.getSelfUser.getEffectiveAvatarUrl)
@@ -124,7 +132,8 @@ object EmbedUtils {
 
   /**
     * Embed that displays the stats of a user
-    * @param user user for which the stats are displayed
+    *
+    * @param user          user for which the stats are displayed
     * @param bannsReceived how often the user was banned
     * @param bansInitiated how often the user banned another user
     * @return the created embed
@@ -140,12 +149,4 @@ object EmbedUtils {
     builder.setTimestamp(OffsetDateTime.now)
     builder.build()
   }
-
-  /**
-    * Formats the given number as unicode emote
-    *
-    * @param i a number
-    * @return unicode emote string
-    */
-  def toEmotes(i: Int): String = i.toString.map[Int](c => c.asDigit).map(DIGIT_EMOTE(_)).mkString
 }
