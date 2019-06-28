@@ -77,6 +77,31 @@ object EmbedUtils {
   }
 
   /**
+    * Embed that shows of the users that most often used the /voteban command
+    *
+    * @param leaderList list with top users of /voteban
+    * @return
+    */
+  def whoBannedEmbed(leaderList: List[(Member, Int)]): MessageEmbed = {
+    val builder = new EmbedBuilder()
+    builder.setAuthor("/voteban top users", null, VotebanBot.JDA.getSelfUser.getEffectiveAvatarUrl)
+    for (((user, value), i) <- leaderList.zipWithIndex) {
+      builder.addField(
+        s"${toEmotes(i + 1)} **${user.getEffectiveName}** _(${user.getUser.getAsTag})_ banned **$value** times",
+        ZERO_WIDTH_SPACE,
+        false
+      )
+    }
+    if (builder.getFields.isEmpty) {
+      builder.setDescription("No users banned yet.\nBe the first who banned someone, use `/votban`!")
+    } else {
+      builder.setImage("https://raw.githubusercontent.com/joblo2213/Voteban-t/memes/everyone_gets_a_ban_operah.jpg")
+    }
+    builder.setColor(COLOR)
+    builder.build()
+  }
+
+  /**
     * Formats the given number as unicode emote
     *
     * @param i a number
