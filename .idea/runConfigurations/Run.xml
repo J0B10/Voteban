@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="de.voteban.Launcher" />
-    <module name="Voteban't" />
+    <module name="Voteban" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

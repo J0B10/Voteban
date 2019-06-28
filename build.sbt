@@ -2,7 +2,7 @@ import java.io.File
 
 name := "Voteban"
 
-version := "0.1"
+version := "1.0"
 
 scalaVersion := "2.13.0"
 
