@@ -1,22 +1,13 @@
-All comments sorted by author
+#### This file contains the default ban messages
+# Add comments by starting a line with #
 
-Kappasknight:
 You're Out!
 You'll _NOT_ be back!
-
-skate702:
 Haha rip lol
-
-MelanX:
 Game Over
 You're not allowed to exist anymore
-
-agnor99:
 The ban is a lie
-
-derNiklaas:
 No u
-
 The ban hammer has spoken!
 Flying is not enabled on this server!
 I wish I could ban you more than once

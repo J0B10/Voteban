@@ -5,6 +5,8 @@
 /wiki/
 /.idea/*
 /src/main/resources/*
+!/src/main/resources/ban_reasons.txt
+!/src/main/resources/ban_reasons.images.txt
 !/src/main/resources/log4j.properties
 # Only allow specific runConfigurations as they may contain tokens
 !/.idea/runConfigurations/Run.xml
