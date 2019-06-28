@@ -20,6 +20,9 @@ libraryDependencies += "org.slf4j" % "slf4j-log4j12" % "1.7.22"
 
 //Custom tasks
 lazy val RESOURCES_FILE = new File("src/main/resources")
-lazy val ADDITIONAL_RESOURCES: Seq[File] = Seq()
+lazy val ADDITIONAL_RESOURCES: Seq[File] = Seq(
+  new File("README.md"),
+  new File("LICENSE")
+)
 lazy val include = TaskKey[Unit]("include", "Copies the resources that should be packed with the jar to the resources directory")
 include := SBTUtillity.includeResources(streams.value.log, RESOURCES_FILE, ADDITIONAL_RESOURCES)
