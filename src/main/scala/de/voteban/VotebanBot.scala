@@ -3,9 +3,9 @@ package de.voteban
 import de.voteban.command._
 import de.voteban.config.{GuildConfig, XMLConfigurationService}
 import de.voteban.db.{GuildData, JSONDatabaseService}
-import de.voteban.utils.{ConfigManager, RestartScheduler, WithLogger}
+import de.voteban.utils.{ConfigManager, EmbedUtils, RestartScheduler, WithLogger}
 import javax.security.auth.login.LoginException
-import net.dv8tion.jda.core.entities.Guild
+import net.dv8tion.jda.core.entities.{Game, Guild}
 import net.dv8tion.jda.core.{JDA, JDABuilder}
 
 object VotebanBot extends WithLogger {
@@ -66,6 +66,7 @@ object VotebanBot extends WithLogger {
     databaseService.loadDatabase()
     JDA addEventListener new ConfigManager
     JDA.addEventListener(VotebanCommand)
+    JDA.getPresence.setGame(Game.playing(EmbedUtils.BOT_QUICK_URL))
   }
 
   private def onShutdown(): Unit = {

@@ -14,11 +14,11 @@ object VotebanCommand extends Command("voteban", Seq("voteban't", "votekick")) {
     }
     if (message.getType == MessageType.DEFAULT) {
       if (!message.getContentRaw.contains(" ")) {
-        message.getChannel.sendMessage(EmbedUtils.errorEmbed(message.getAuthor, "You have to use the voteban command with at least another argument")).complete()
+        message.getChannel.sendMessage(EmbedUtils.errorEmbed(message.getMember, "You have to use the voteban command with at least another argument")).complete()
         return
       }
       val messageParts = message.getContentDisplay.split(" ")
-      message.getChannel.sendMessage(EmbedUtils.votebanEmbed(message.getAuthor, messageParts(1), 5, "test", None)).complete()
+      message.getChannel.sendMessage(EmbedUtils.votebanEmbed(message.getMember, messageParts(1), 5, "test", None)).complete()
     }
   } //TODO
 }
