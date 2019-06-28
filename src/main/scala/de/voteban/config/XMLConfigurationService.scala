@@ -78,7 +78,8 @@ class XMLConfigurationService extends WithLogger {
     val config = xml.Utility.trim(xml.XML.load(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) \ "config"
     GuildConfig(
       (config \ "guildId").text.toLong,
-      (config \ "comments" \ "s").map(_.text)
+      (config \ "banReasons" \ "s").map(_.text),
+      (config \ "banReasons" \ "img").map(_.text)
       //Read other config values from config
     )
   }
@@ -117,9 +118,10 @@ class XMLConfigurationService extends WithLogger {
         <guildId>
           {guildConfig.guildId}
         </guildId>
-        <comments>
-          {NodeSeq.fromSeq(guildConfig.comments.map(s => <s>{s}</s>))}
-        </comments>
+        <banReasons>
+          {NodeSeq.fromSeq(guildConfig.banReasons.map(s => <s>{s}</s>))}
+          {NodeSeq.fromSeq(guildConfig.banReasonImages.map(img => <img>{img}</img>))}
+        </banReasons>
       </config>
     //Save config values to config
     writer.print(new PrettyPrinter(120, 2).format(config))
@@ -131,7 +133,8 @@ class XMLConfigurationService extends WithLogger {
 object XMLConfigurationService {
 
   //TODO Specify file location
- private val DEFAULT_COMMENTS = Source.fromInputStream(getClass.getResourceAsStream(" "), "UTF8").getLines.toSeq
+ private val BAN_REASONS_DEFAULT = Source.fromInputStream(getClass.getResourceAsStream(" "), "UTF8").getLines.toSeq
+  private val BAN_REASON_IMAGES_DEFAULT = Source.fromInputStream(getClass.getResourceAsStream(" "), "UTF8").getLines.toSeq
 
   // language=RegExp
   val GUILD_CONFIG_FILE_REGEX: Regex = "guild-(\\d+).xml".r
@@ -140,7 +143,9 @@ object XMLConfigurationService {
 
   def DEFAULT_CONFIG(guildId: Long): GuildConfig = GuildConfig(
     guildId,
-    DEFAULT_COMMENTS
+    BAN_REASONS_DEFAULT,
+    BAN_REASON_IMAGES_DEFAULT
+
     //Add default values
   )
 
