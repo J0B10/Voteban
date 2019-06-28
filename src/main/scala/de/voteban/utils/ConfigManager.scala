@@ -24,7 +24,7 @@ class ConfigManager extends EventListener {
     */
   override def onEvent(event: Event): Unit = {
     event match {
-      case e: PrivateMessageReceivedEvent => onPM(e)
+      case e: PrivateMessageReceivedEvent if e.getAuthor != e.getJDA.getSelfUser=> onPM(e)
       case _ => //Default, do nothing
     }
   }
@@ -74,7 +74,7 @@ class ConfigManager extends EventListener {
     } catch {
       case e: Exception =>
         author.openPrivateChannel().complete()
-          .sendMessage(s"⚠ **Could not upload ${xmlFile.getFileName}** - ${e.getMessage}\nMaybe config file contains errors?").queue()
+          .sendMessage(s"⚠ **Could not upload ${xmlFile.getFileName}**: ${e.getClass.getName} - ${e.getMessage}\nMaybe config file contains errors?").queue()
     }
   }
 

@@ -76,9 +76,9 @@ class XMLConfigurationService extends WithLogger {
     */
   @throws(classOf[Exception])
   def readGuildConfig(inputStream: InputStream): GuildConfig = {
-    val config = xml.Utility.trim(xml.XML.load(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) \ "config"
+    val config = xml.Utility.trim(xml.XML.load(new InputStreamReader(inputStream, StandardCharsets.UTF_8)))
     GuildConfig(
-      (config \ "guildId").text.toLong,
+      (config \ "guildId").text.trim.toLong,
       (config \ "banReasons" \ "s").map(_.text),
       (config \ "banReasons" \ "img").map(_.text)
       //Read other config values from config
