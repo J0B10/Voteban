@@ -5,8 +5,7 @@ import java.awt.Color
 import de.voteban.VotebanBot
 import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.EmbedBuilder.ZERO_WIDTH_SPACE
-import net.dv8tion.jda.core.entities.MessageEmbed.Field
-import net.dv8tion.jda.core.entities.{Member, MessageEmbed, SelfUser, User}
+import net.dv8tion.jda.core.entities.{Member, MessageEmbed, User}
 
 /**
   * Provides methods for creating preset embeds based on given data
@@ -23,14 +22,7 @@ object EmbedUtils {
     *
     * Use `DIGIT_EMOTE(3)` for [[https://discordapp.com/assets/12a9f39a3bfc18e0e4557f60302712a1.svg]]
     */
-  val DIGIT_EMOTE: List[String] = List("0⃣ ", "1⃣ ","2⃣ ","3⃣ ","4⃣ ","5⃣ ","6⃣ ","7⃣ ","8⃣ ","9⃣ ")
-
-  /**
-    * Formats the given number as unicode emote
-    * @param i a number
-    * @return unicode emote string
-    */
-  def toEmotes(i: Int): String = i.toString.map[Int](c=> c.asDigit).map(DIGIT_EMOTE(_)).mkString
+  val DIGIT_EMOTE: List[String] = List("0⃣ ", "1⃣ ", "2⃣ ", "3⃣ ", "4⃣ ", "5⃣ ", "6⃣ ", "7⃣ ", "8⃣ ", "9⃣ ")
 
   //TODO derNiklaas continue
   def votebanEmbed(author: User, user: String, amount: Int, reason: String, image: Option[String]): MessageEmbed = {
@@ -42,7 +34,7 @@ object EmbedUtils {
     builder.setColor(Color.GREEN)
 
     builder.addField("Ban Reason", reason, false)
-    if(image.isDefined){
+    if (image.isDefined) {
       builder.setImage(image.get)
     }
 
@@ -61,6 +53,7 @@ object EmbedUtils {
 
   /**
     * Embed that shows of the most often banned users
+    *
     * @param leaderList list with the most often banned users and their stats
     * @return
     */
@@ -82,4 +75,12 @@ object EmbedUtils {
     builder.setColor(COLOR)
     builder.build()
   }
+
+  /**
+    * Formats the given number as unicode emote
+    *
+    * @param i a number
+    * @return unicode emote string
+    */
+  def toEmotes(i: Int): String = i.toString.map[Int](c => c.asDigit).map(DIGIT_EMOTE(_)).mkString
 }

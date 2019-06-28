@@ -4,11 +4,11 @@ import java.io.ByteArrayOutputStream
 
 import de.voteban.VotebanBot
 import de.voteban.config.XMLConfigurationService
-import net.dv8tion.jda.core.{MessageBuilder, Permission}
 import net.dv8tion.jda.core.entities.{Message, User}
 import net.dv8tion.jda.core.events.Event
 import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent
 import net.dv8tion.jda.core.hooks.EventListener
+import net.dv8tion.jda.core.{MessageBuilder, Permission}
 
 import scala.jdk.CollectionConverters._
 
@@ -19,6 +19,7 @@ class ConfigManager extends EventListener {
 
   /**
     * Called by JDA on any event
+    *
     * @param event any event fired by jda
     */
   override def onEvent(event: Event): Unit = {
@@ -51,25 +52,25 @@ class ConfigManager extends EventListener {
     * Checks if the user is allowed to send that specific file and saves it
     *
     * @param xmlFile the attached config file
-    * @param author the user that did send the file
+    * @param author  the user that did send the file
     */
   private def saveConfig(xmlFile: Message.Attachment, author: User): Unit = {
     try {
       val config = VotebanBot.configService.readGuildConfig(xmlFile.getInputStream)
       VotebanBot.JDA.getGuilds.asScala.find(g => g.getIdLong == config.guildId) match {
-         case Some(guild) =>
-           Option(guild.getMember(author)) match {
-             case Some(member) if member.hasPermission(Permission.ADMINISTRATOR) =>
-               VotebanBot.configService.saveGuildConfig(config)
-               author.openPrivateChannel().complete().sendMessage(s"✅ Updated config for **${guild.getName}** _(${guild.getId})_").queue()
-             case _ =>
-               author.openPrivateChannel().complete()
-                 .sendMessage(s"⚠ **You aren't an admin for ${guild.getName}** _(${guild.getId})_.\nMaybe the guildId is wrong?").queue()
-           }
-         case None =>
-           author.openPrivateChannel().complete()
-             .sendMessage(s"⚠ **${xmlFile.getFileName} is for an unknown guild.**\nMaybe the guildId is wrong?").queue()
-       }
+        case Some(guild) =>
+          Option(guild.getMember(author)) match {
+            case Some(member) if member.hasPermission(Permission.ADMINISTRATOR) =>
+              VotebanBot.configService.saveGuildConfig(config)
+              author.openPrivateChannel().complete().sendMessage(s"✅ Updated config for **${guild.getName}** _(${guild.getId})_").queue()
+            case _ =>
+              author.openPrivateChannel().complete()
+                .sendMessage(s"⚠ **You aren't an admin for ${guild.getName}** _(${guild.getId})_.\nMaybe the guildId is wrong?").queue()
+          }
+        case None =>
+          author.openPrivateChannel().complete()
+            .sendMessage(s"⚠ **${xmlFile.getFileName} is for an unknown guild.**\nMaybe the guildId is wrong?").queue()
+      }
     } catch {
       case e: Exception =>
         author.openPrivateChannel().complete()

@@ -1,4 +1,5 @@
 package de.voteban.command
+
 import de.voteban.VotebanBot
 import de.voteban.db.UserData
 import de.voteban.utils.EmbedUtils

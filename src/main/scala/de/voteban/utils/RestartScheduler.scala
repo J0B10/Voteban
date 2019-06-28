@@ -5,31 +5,36 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.Executors
 
-import scala.concurrent.duration.FiniteDuration
-import scala.concurrent.duration._
+import scala.concurrent.duration.{FiniteDuration, _}
 import scala.language.postfixOps
 
 /**
   * Schedules a shutdown of the bot after a given time interval
   *
-  * @param scheduleIn duration after which the bot should be shut down
+  * @param scheduleIn     duration after which the bot should be shut down
   * @param notifyInterval interval between the notifications before shutdown
-  * @param notifyTimes how often should be notified before shutdown (0 to deactivate notifications)
+  * @param notifyTimes    how often should be notified before shutdown (0 to deactivate notifications)
   */
-class RestartScheduler(scheduleIn: FiniteDuration, val notifyInterval: FiniteDuration, val notifyTimes: Int) extends WithLogger  {
-
-  private val executor = Executors.newSingleThreadScheduledExecutor()
+class RestartScheduler(scheduleIn: FiniteDuration, val notifyInterval: FiniteDuration, val notifyTimes: Int) extends WithLogger {
 
   /**
     * Time when the restart scheduler was setup
     */
   val setup_time: OffsetDateTime = OffsetDateTime.now
-
   /**
     * Time at which the next restart will be performed
     */
   val restart_time: OffsetDateTime = OffsetDateTime.now.plus(scheduleIn.toMillis, ChronoUnit.MILLIS)
-
+  private val executor = Executors.newSingleThreadScheduledExecutor()
+  private val shutdown: Runnable = () => {
+    log info "SHUTTING DOWN NOW!"
+    sys exit 0
+  }
+  private val countdown: Runnable = () => {
+    val left = (notifyTimes - i) * notifyInterval
+    i += 1
+    log info s"Restart scheduled in $left"
+  }
   private var i = 0
 
   /**
@@ -47,18 +52,8 @@ class RestartScheduler(scheduleIn: FiniteDuration, val notifyInterval: FiniteDur
   def cancel(): Unit = {
     executor.shutdownNow()
   }
-
-  private val shutdown: Runnable =() => {
-    log info "SHUTTING DOWN NOW!"
-    sys exit 0
-  }
-
-  private val countdown: Runnable =() => {
-    val left = (notifyTimes - i) * notifyInterval
-    i += 1
-    log info s"Restart scheduled in $left"
-  }
 }
+
 object RestartScheduler {
 
   /**

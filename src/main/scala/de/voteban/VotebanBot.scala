@@ -9,21 +9,38 @@ import net.dv8tion.jda.core.entities.Guild
 import net.dv8tion.jda.core.{JDA, JDABuilder}
 
 object VotebanBot extends WithLogger {
-
+  /**
+    * Service that manages the config files
+    */
   val configService = new XMLConfigurationService
+  /**
+    * Service for accessing the database file
+    */
   val databaseService = new JSONDatabaseService
   private var _jda: Option[JDA] = None
   private var restartScheduler: Option[RestartScheduler] = None
 
+  /**
+    * Shortcut for getting the database content for a specific guild
+    *
+    * @param guild guild object form jda
+    * @return the database entry for that guild
+    */
   def GUILD_DATA(guild: Guild): GuildData = databaseService.database.guilds.getOrElse(guild.getIdLong, GuildData(guild.getIdLong, Map()))
 
+  /**
+    * Shortcut for getting the configuration settings for a specific guild
+    *
+    * @param guild guild object form jda
+    * @return the config for that guild or the default config if an unknown guild
+    */
   def GUILD_CONFIG(guild: Guild): GuildConfig = try {
-      configService.loadGuildConfig(guild.getIdLong)
-    } catch {
-      case e: Exception =>
-        log error s"Could not load config for guild ${guild.getId}: ${e.getClass.getName} - ${e.getMessage}"
-        XMLConfigurationService.DEFAULT_CONFIG(guild.getIdLong)
-    }
+    configService.loadGuildConfig(guild.getIdLong)
+  } catch {
+    case e: Exception =>
+      log error s"Could not load config for guild ${guild.getId}: ${e.getClass.getName} - ${e.getMessage}"
+      XMLConfigurationService.DEFAULT_CONFIG(guild.getIdLong)
+  }
 
   private[Launcher] def init(apiToken: String, restartScheduler: Option[RestartScheduler] = None): Boolean = {
     try {
@@ -56,5 +73,8 @@ object VotebanBot extends WithLogger {
     JDA.shutdown()
   }
 
+  /**
+    * @return the jda instance used by this bot
+    */
   def JDA: JDA = _jda.getOrElse(throw new IllegalStateException("Bot is not initialized yet"))
 }

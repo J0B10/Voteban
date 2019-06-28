@@ -32,9 +32,9 @@ class XMLConfigurationService extends WithLogger {
             case e: Exception =>
               log warn s"Could not load ${f.getName} - ${e.getMessage}"
           }
-        case _=> //Ignore default
+        case _ => //Ignore default
       }
-      ))
+    ))
     log debug "Config files were loaded into cache"
   }
 
@@ -59,7 +59,7 @@ class XMLConfigurationService extends WithLogger {
         }
       }
       cachedConfigs += (guildId -> cfg)
-      log debug  s"Cached config for guild $guildId"
+      log debug s"Cached config for guild $guildId"
       cfg
     })
   }
@@ -106,7 +106,7 @@ class XMLConfigurationService extends WithLogger {
   /**
     * Tries to write the configuration for a guild to an output stream
     *
-    * @param guildConfig the configuration object to save
+    * @param guildConfig  the configuration object to save
     * @param outputStream the output strem to which the configuration should be written
     * @throws Exception if config saving failed
     */
@@ -119,8 +119,11 @@ class XMLConfigurationService extends WithLogger {
           {guildConfig.guildId}
         </guildId>
         <banReasons>
-          {NodeSeq.fromSeq(guildConfig.banReasons.map(s => <s>{s}</s>))}
-          {NodeSeq.fromSeq(guildConfig.banReasonImages.map(img => <img>{img}</img>))}
+          {NodeSeq.fromSeq(guildConfig.banReasons.map(s => <s>
+          {s}
+        </s>))}{NodeSeq.fromSeq(guildConfig.banReasonImages.map(img => <img>
+          {img}
+        </img>))}
         </banReasons>
       </config>
     //Save config values to config
@@ -132,14 +135,12 @@ class XMLConfigurationService extends WithLogger {
 
 object XMLConfigurationService {
 
-  //TODO Specify file location
- private val BAN_REASONS_DEFAULT = Source.fromInputStream(getClass.getResourceAsStream(" "), "UTF8").getLines.toSeq
-  private val BAN_REASON_IMAGES_DEFAULT = Source.fromInputStream(getClass.getResourceAsStream(" "), "UTF8").getLines.toSeq
-
   // language=RegExp
   val GUILD_CONFIG_FILE_REGEX: Regex = "guild-(\\d+).xml".r
-
   val CONFIG_DIR = new File("config")
+  //TODO Specify file location
+  private val BAN_REASONS_DEFAULT = Source.fromInputStream(getClass.getResourceAsStream(" "), "UTF8").getLines.toSeq
+  private val BAN_REASON_IMAGES_DEFAULT = Source.fromInputStream(getClass.getResourceAsStream(" "), "UTF8").getLines.toSeq
 
   def DEFAULT_CONFIG(guildId: Long): GuildConfig = GuildConfig(
     guildId,

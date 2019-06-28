@@ -40,7 +40,7 @@ class JSONDatabaseService extends WithLogger {
     * Blocking if another thread is currently writing to the database
     *
     * @param userData user data to write to the database
-    * @param guildId id of the guild to which this user data belongs
+    * @param guildId  id of the guild to which this user data belongs
     * @throws java.lang.IllegalStateException if the database wasn't loaded yet
     */
   @throws(classOf[IllegalStateException])
@@ -56,6 +56,7 @@ class JSONDatabaseService extends WithLogger {
 
   /**
     * Add a guild with no user data to the database
+    *
     * @param guildId id of the guild
     * @throws IllegalStateException if the database wasn't loaded yet
     */
