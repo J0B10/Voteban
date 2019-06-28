@@ -28,11 +28,11 @@ object EmbedUtils {
     *
     * Use `DIGIT_EMOTE(3)` for [[https://discordapp.com/assets/12a9f39a3bfc18e0e4557f60302712a1.svg]]
     */
-  val DIGIT_EMOTE: List[String] = List("0⃣ ", "1⃣ ", "2⃣ ", "3⃣ ", "4⃣ ", "5⃣ ", "6⃣ ", "7⃣ ", "8⃣ ", "9⃣ ")
+  val DIGIT_EMOTE: List[String] = List("0⃣", "1⃣", "2⃣", "3⃣", "4⃣", "5⃣", "6⃣", "7⃣", "8⃣", "9⃣")
 
   def votebanEmbed(banned: Member, bannsReceived: Int, author: Member, bannsInitiated: Int, reason: String, isReasonAnImage: Boolean): MessageEmbed = {
     val builder = new EmbedBuilder()
-    val msg = s"${banned.getEffectiveName} was banned by  ${author.getEffectiveName}"
+    val msg = s"${banned.getEffectiveName} was banned by ${author.getEffectiveName}"
     builder.setAuthor(msg, null, banned.getUser.getAvatarUrl)
     builder.setDescription(s"**${banned.getEffectiveName}** has been banned ${toEmotes(bannsReceived)} times\n" +
       s"**${author.getEffectiveName}** has banned others ${toEmotes(bannsInitiated)} times")
