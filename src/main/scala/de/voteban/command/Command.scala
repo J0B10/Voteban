@@ -38,7 +38,7 @@ abstract class Command(val name: String, private val _aliases: Seq[String], val 
   override def onEvent(e: Event): Unit = {
     e match {
       case event: GuildMessageReceivedEvent =>
-        aliases.find(a => event.getMessage.getContentRaw.trim.toLowerCase.startsWith(s"/$a ")) match {
+        aliases.find(a => event.getMessage.getContentRaw.trim.toLowerCase.startsWith(s"/$a")) match {
           case Some(alias) =>
             if (event.getMember.hasPermission(event.getChannel, requiredPermissions.asJava)) {
               execute(event.getMessage)
