@@ -36,15 +36,26 @@ object EmbedUtils {
   def votebanEmbed(author: User, user: String, amount: Int, reason: String, image: Option[String]): MessageEmbed = {
     val builder = new EmbedBuilder()
 
-    builder.setAuthor(author.getName, "", author.getAvatarUrl)
+    builder.setAuthor(author.getName, null, author.getAvatarUrl)
     builder.setTitle("Voteban")
-    builder.setDescription(s"*$user* has been banned **$amount times\n${author.getName} has used /voteban x times")
+    builder.setDescription(s"*$user* has been banned **$amount times**\n${author.getName} has used /voteban x times")
+    builder.setColor(Color.GREEN)
 
     builder.addField("Ban Reason", reason, false)
     if(image.isDefined){
-      builder.setThumbnail(image.get)
+      builder.setImage(image.get)
     }
 
+    builder.build()
+  }
+
+  def errorEmbed(author: User, error: String): MessageEmbed = {
+    val builder = new EmbedBuilder()
+
+    builder.setAuthor(author.getName, null, author.getAvatarUrl)
+    builder.setTitle("Error")
+    builder.setDescription(s"An error occurred while performing a task:\n$error")
+    builder.setColor(Color.RED)
     builder.build()
   }
 
