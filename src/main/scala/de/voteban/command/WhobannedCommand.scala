@@ -5,7 +5,7 @@ import de.voteban.db.UserData
 import de.voteban.utils.EmbedUtils
 import net.dv8tion.jda.core.entities.Message
 
-object WhobannedCommand extends Command("whobanned", Seq()) {
+object WhobannedCommand extends Command("whobanned") {
 
   override protected def execute(message: Message): Unit = {
     val sorted = VotebanBot.GUILD_DATA(message.getGuild).users.values.toList.sortWith(sortByBanns)

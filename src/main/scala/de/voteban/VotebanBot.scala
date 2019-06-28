@@ -2,10 +2,10 @@ package de.voteban
 
 import de.voteban.command._
 import de.voteban.config.{GuildConfig, XMLConfigurationService}
-import de.voteban.db.{GuildData, JSONDatabaseService}
+import de.voteban.db.{GuildData, JSONDatabaseService, UserData}
 import de.voteban.utils.{ConfigManager, EmbedUtils, RestartScheduler, WithLogger}
 import javax.security.auth.login.LoginException
-import net.dv8tion.jda.core.entities.{Game, Guild}
+import net.dv8tion.jda.core.entities.{Game, Guild, Member}
 import net.dv8tion.jda.core.{JDA, JDABuilder}
 
 object VotebanBot extends WithLogger {
@@ -27,6 +27,14 @@ object VotebanBot extends WithLogger {
     * @return the database entry for that guild
     */
   def GUILD_DATA(guild: Guild): GuildData = databaseService.database.guilds.getOrElse(guild.getIdLong, GuildData(guild.getIdLong, Map()))
+
+  /**
+    * Shortcut for getting the database content for a specific guild member
+    *
+    * @param member member object form jda
+    * @return the database entry for that user
+    */
+  def USER_DATA(member: Member): UserData = GUILD_DATA(member.getGuild).users.getOrElse(member.getUser.getIdLong, UserData(member.getUser.getIdLong, 0, 0))
 
   /**
     * Shortcut for getting the configuration settings for a specific guild

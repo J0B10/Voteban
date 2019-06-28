@@ -30,16 +30,16 @@ object EmbedUtils {
     */
   val DIGIT_EMOTE: List[String] = List("0⃣ ", "1⃣ ", "2⃣ ", "3⃣ ", "4⃣ ", "5⃣ ", "6⃣ ", "7⃣ ", "8⃣ ", "9⃣ ")
 
-  //TODO derNiklaas continue
-  def votebanEmbed(author: Member, user: String, amount: Int, reason: String, image: Option[String]): MessageEmbed = {
+  def votebanEmbed(banned: Member, bannsReceived: Int, author: Member, bannsInitiated: Int, reason: String, isReasonAnImage: Boolean): MessageEmbed = {
     val builder = new EmbedBuilder()
-    builder.setAuthor(author.getEffectiveName, null, author.getUser.getAvatarUrl)
-    builder.setTitle("Voteban")
-    builder.setDescription(s"*$user* has been banned **$amount times**\n${author.getEffectiveName} has used /voteban x times")
-    builder.setColor(author.getColorRaw)
-    builder.addField("Ban Reason", reason, false)
-    if (image.isDefined) {
-      builder.setImage(image.get)
+    val msg = s"${banned.getEffectiveName} was banned by  ${author.getEffectiveName}"
+    builder.setAuthor(msg, null, banned.getUser.getAvatarUrl)
+    builder.setDescription(s"**${banned.getEffectiveName}** has been banned ${toEmotes(bannsReceived)} times**\n" +
+      s"${author.getEffectiveName} has banned others ${toEmotes(bannsInitiated)} times")
+    builder.setColor(COLOR)
+    builder.addField("Ban reason:", if (isReasonAnImage) ZERO_WIDTH_SPACE else reason, false)
+    if (isReasonAnImage) {
+      builder.setImage(reason)
     }
     builder.setFooter("git.io/voteban-t", VotebanBot.JDA.getSelfUser.getEffectiveAvatarUrl)
     builder.setTimestamp(OffsetDateTime.now)
@@ -56,8 +56,9 @@ object EmbedUtils {
     */
   def errorEmbed(author: Member, error: String, task: String = null): MessageEmbed = {
     val builder = new EmbedBuilder()
-    builder.setAuthor(author.getEffectiveName, null, author.getUser.getAvatarUrl)
-    builder.setTitle("Error")
+    builder.setAuthor("Error",
+      null,
+      "https://raw.githubusercontent.com/twitter/twemoji/c78b889b61c629ec4506d6d4b5c993d871863d00/72x72/26a0.png")
     builder.setDescription(s"An error occurred while ${Option(task).getOrElse("performing a task")}:\n$error")
     builder.setColor(Color.RED)
     builder.setFooter(BOT_QUICK_URL, VotebanBot.JDA.getSelfUser.getEffectiveAvatarUrl)

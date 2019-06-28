@@ -1,7 +1,7 @@
 package de.voteban.command
 
 import net.dv8tion.jda.core.Permission
-import net.dv8tion.jda.core.entities.Message
+import net.dv8tion.jda.core.entities.{Message, MessageType}
 import net.dv8tion.jda.core.events.Event
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent
 import net.dv8tion.jda.core.hooks.EventListener
@@ -16,8 +16,13 @@ import scala.jdk.CollectionConverters._
   * @param name                the name of the command
   * @param _aliases            aliases that can be used instead of the name
   * @param requiredPermissions permissions that the user needs to execute the command
+  * @param requiresTalk        if the bot needs talk permissions to perform that command
   */
-abstract class Command(val name: String, private val _aliases: Seq[String], val requiredPermissions: Permission*) extends EventListener {
+abstract class Command(val name: String,
+                       private val _aliases: Seq[String] = Seq(),
+                       val requiredPermissions: Seq[Permission] = Seq(),
+                       val requiresTalk: Boolean = true
+                      ) extends EventListener {
 
   /**
     * All aliases including the default name (always lowercase)
@@ -30,10 +35,11 @@ abstract class Command(val name: String, private val _aliases: Seq[String], val 
 
   override def onEvent(e: Event): Unit = {
     e match {
-      case event: GuildMessageReceivedEvent =>
+      case event: GuildMessageReceivedEvent if event.getMessage.getType == MessageType.DEFAULT =>
         aliases.find(a => event.getMessage.getContentRaw.trim.toLowerCase.startsWith(s"/$a")) match {
           case Some(alias) =>
-            if (event.getMember.hasPermission(event.getChannel, requiredPermissions.asJava)) {
+            if (event.getMember.hasPermission(event.getChannel, requiredPermissions.asJava)
+              && (event.getChannel.canTalk == requiresTalk)) {
               execute(event.getMessage)
             }
           case _ => //Default, do nothing
