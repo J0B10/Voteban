@@ -80,7 +80,8 @@ class XMLConfigurationService extends WithLogger {
     GuildConfig(
       (config \ "guildId").text.trim.toLong,
       (config \ "banReasons" \ "s").map(_.text),
-      (config \ "banReasons" \ "img").map(_.text)
+      (config \ "banReasons" \ "img").map(_.text),
+      (config \ "leaderboard-length").text.trim.toInt
       //Read other config values from config
     )
   }
@@ -116,9 +117,7 @@ class XMLConfigurationService extends WithLogger {
     val writer = new PrintWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8))
     val config: Node =
       <config>
-        <guildId>
-          {guildConfig.guildId}
-        </guildId>
+        <guildId>{guildConfig.guildId}</guildId>
         <banReasons>
           {NodeSeq.fromSeq(guildConfig.banReasons.map(s => <s>
           {s}
@@ -126,6 +125,7 @@ class XMLConfigurationService extends WithLogger {
           {img}
         </img>))}
         </banReasons>
+        <leaderboard-length>{guildConfig.leaderboard_length}</leaderboard-length>
       </config>
     //Save config values to config
     writer.print(new PrettyPrinter(120, 2).format(config))
@@ -151,7 +151,8 @@ object XMLConfigurationService {
   def DEFAULT_CONFIG(guildId: Long): GuildConfig = GuildConfig(
     guildId,
     BAN_REASONS_DEFAULT,
-    BAN_REASON_IMAGES_DEFAULT
+    BAN_REASON_IMAGES_DEFAULT,
+    5
 
     //Add default values
   )

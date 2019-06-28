@@ -21,7 +21,7 @@ object EmbedUtils {
   /**
     * Shortened URL that links to the bots github page
     */
-  val BOT_QUICK_URL: String = "git.io/Voteban"
+  val BOT_QUICK_URL: String = "git.io/voteban"
 
   /**
     * A list of unicode emotes
@@ -37,11 +37,11 @@ object EmbedUtils {
     builder.setDescription(s"**${banned.getEffectiveName}** has been banned ${toEmotes(bannsReceived)} times\n" +
       s"**${author.getEffectiveName}** has banned others ${toEmotes(bannsInitiated)} times")
     builder.setColor(COLOR)
-    builder.addField("Ban message:", if (isReasonAnImage) ZERO_WIDTH_SPACE else reason, false)
+    builder.addField("Ban message:", if (isReasonAnImage) ZERO_WIDTH_SPACE else reason.replace("$user", banned.getEffectiveName), false)
     if (isReasonAnImage) {
       builder.setImage(reason)
     }
-    builder.setFooter("git.io/Voteban", VotebanBot.JDA.getSelfUser.getEffectiveAvatarUrl)
+    builder.setFooter("git.io/voteban", VotebanBot.JDA.getSelfUser.getEffectiveAvatarUrl)
     builder.setTimestamp(OffsetDateTime.now)
     builder.build()
   }

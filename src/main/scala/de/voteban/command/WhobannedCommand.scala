@@ -8,8 +8,9 @@ import net.dv8tion.jda.core.entities.Message
 object WhobannedCommand extends Command("whobanned") {
 
   override protected def execute(message: Message): Unit = {
+    val max = VotebanBot.GUILD_CONFIG(message.getGuild).leaderboard_length
     val sorted = VotebanBot.GUILD_DATA(message.getGuild).users.values.toList.sortWith(sortByBanns)
-    val leaders = sorted.slice(0, if (sorted.length < 10) sorted.length else 10).map(userData => {
+    val leaders = sorted.slice(0, if (sorted.length < max) sorted.length else max).map(userData => {
       (message.getGuild.getMemberById(userData.userId), userData.bansInitiated)
     })
     message.getChannel.sendMessage(EmbedUtils.whoBannedEmbed(leaders)).queue()
