@@ -142,11 +142,11 @@ object XMLConfigurationService {
 
   private val BAN_REASONS_DEFAULT =
     Source.fromInputStream(getClass.getResourceAsStream("/ban_reasons.txt"), "UTF8")
-    .getLines.filter(line => !line.startsWith("#") || !line.isEmpty).toSeq
+    .getLines.filter(line => !line.startsWith("#") && !line.isEmpty).toSeq
 
   private val BAN_REASON_IMAGES_DEFAULT =
     Source.fromInputStream(getClass.getResourceAsStream("/ban_reasons.images.txt"), "UTF8")
-    .getLines.filter(line => !line.startsWith("#") || !line.isEmpty).toSeq
+    .getLines.filter(line => !line.startsWith("#") && !line.isEmpty).toSeq
 
   def DEFAULT_CONFIG(guildId: Long): GuildConfig = GuildConfig(
     guildId,
