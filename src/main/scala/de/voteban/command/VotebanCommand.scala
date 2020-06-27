@@ -43,14 +43,14 @@ object VotebanCommand extends Command("voteban", Seq("votekick", "ban")) {
         } else if (possibleUsers.length < 10) {
           message.getChannel.sendMessage(EmbedUtils.errorEmbed(
             message.getMember,
-            "Couldn't identify that user, please mention him or use his id.\nMaybe he is one of these:\n\n"
+            "Couldn't identify that user, please mention them or use their id.\nMaybe they are one of these:\n\n"
               + possibleUsers.map(m => s"${m.getEffectiveName} _(id:`${m.getUser.getId}`)_").mkString("\n"),
             "handling your command"
           )).queue()
           None
         } else {
           message.getChannel.sendMessage(EmbedUtils.errorEmbed(
-            message.getMember, "Couldn't identify that user, please mention him or use his id.", "handling your command")).queue()
+            message.getMember, "Couldn't identify that user, please mention them or use their id.", "handling your command")).queue()
           None
         }
       })
