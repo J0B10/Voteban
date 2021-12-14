@@ -12,6 +12,9 @@ We believe that talking to each other and explaining misbehaviour is better than
 If you are looking for a real moderation tool this is propably not the right bot.  
 Also be aware if using the bot that it sadly has the potential to be misused or misunderstood._  
 
+
+### ⚠️ This bot has reached EOL and was affected by [`CVE-2021-44228`](https://github.com/advisories/GHSA-jfh8-c2jp-5v3q). Do not run it!
+
 --------------------
 
 There are so meany reasons why you would need `/voteban`:
